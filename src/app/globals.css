@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+:root {
+  /* Light theme colors */
+  --primary: #1abc9c;
+  --primary-hover: #16a085;
+  --accent: #f5b041;
+  --accent-hover: #d68910;
+  --background: #f9f9f9;
+  --background-hover: #f0f0f0;
+  --text: #2c3e50;
+  --text-muted: #7f8c8d;
+  --border: #e5e5e5;
+  --border-hover: #d4d4d4;
+  --card: #ffffff;
+  --card-hover: #f8f8f8;
+  --success: #27ae60;
+  --success-hover: #219a52;
+  --warning: #f39c12;
+  --warning-hover: #d68910;
+  --error: #e74c3c;
+  --error-hover: #c0392b;
+  --tint: #1abc9c;
+  --tab-icon-default: #ccc;
+  --tab-icon-selected: #1abc9c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme colors */
+    --primary: #16a085;
+    --primary-hover: #138d76;
+    --accent: #d68910;
+    --accent-hover: #b36a00;
+    --background: #121212;
+    --background-hover: #1a1a1a;
+    --text: #f2f2f2;
+    --text-muted: #a0a0a0;
+    --border: #444;
+    --border-hover: #555;
+    --card: #1e1e1e;
+    --card-hover: #252525;
+    --success: #2ecc71;
+    --success-hover: #27ae60;
+    --warning: #f4d03f;
+    --warning-hover: #f1c40f;
+    --error: #e74c3c;
+    --error-hover: #c0392b;
+    --tint: #16a085;
+    --tab-icon-default: #ccc;
+    --tab-icon-selected: #16a085;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--text);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Utility classes for theme transitions */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Hover states for interactive elements */
+.hover-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.hover-accent:hover {
+  background-color: var(--accent-hover);
+}
+
+.hover-card:hover {
+  background-color: var(--card-hover);
+}
+
+.hover-border:hover {
+  border-color: var(--border-hover);
+}
+
+/* Text utilities */
+.text-muted {
+  color: var(--text-muted);
+}
+
+/* Focus states */
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.focus-ring:focus {
+  box-shadow: 0 0 0 2px var(--primary);
+}
