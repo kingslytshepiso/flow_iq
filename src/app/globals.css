@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
   /* Light theme colors */
@@ -25,31 +26,29 @@
   --tab-icon-selected: #1abc9c;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark theme colors */
-    --primary: #16a085;
-    --primary-hover: #138d76;
-    --accent: #d68910;
-    --accent-hover: #b36a00;
-    --background: #121212;
-    --background-hover: #1a1a1a;
-    --text: #f2f2f2;
-    --text-muted: #a0a0a0;
-    --border: #444;
-    --border-hover: #555;
-    --card: #1e1e1e;
-    --card-hover: #252525;
-    --success: #2ecc71;
-    --success-hover: #27ae60;
-    --warning: #f4d03f;
-    --warning-hover: #f1c40f;
-    --error: #e74c3c;
-    --error-hover: #c0392b;
-    --tint: #16a085;
-    --tab-icon-default: #ccc;
-    --tab-icon-selected: #16a085;
-  }
+[data-theme="dark"] {
+  /* Dark theme colors */
+  --primary: #16a085;
+  --primary-hover: #138d76;
+  --accent: #d68910;
+  --accent-hover: #b36a00;
+  --background: #121212;
+  --background-hover: #1a1a1a;
+  --text: #f2f2f2;
+  --text-muted: #a0a0a0;
+  --border: #444;
+  --border-hover: #555;
+  --card: #1e1e1e;
+  --card-hover: #252525;
+  --success: #2ecc71;
+  --success-hover: #27ae60;
+  --warning: #f4d03f;
+  --warning-hover: #f1c40f;
+  --error: #e74c3c;
+  --error-hover: #c0392b;
+  --tint: #16a085;
+  --tab-icon-default: #ccc;
+  --tab-icon-selected: #16a085;
 }
 
 @theme inline {

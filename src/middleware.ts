@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -13,9 +14,6 @@ const publicRoutes = [
   "/api/auth/forgot-password",
   "/api/auth/reset-password",
   "/api/auth/me",
-  "/api/db",
-  "/api/db/users",
-  "/api/db/auth",
 ];
 
 // Define role-based route access
@@ -28,13 +26,16 @@ const roleBasedRoutes: Record<string, string[]> = {
     "/admin",
     "/admin/users",
     "/api/users",
+    "/api/cashflow",
+    "/api/inventory",
+    "/api/reports",
   ],
   manager: [
     "/dashboard",
     "/cash-flow",
     "/inventory",
     "/reports",
-    "/api/cash-flow",
+    "/api/cashflow",
     "/api/inventory",
     "/api/reports",
   ],
@@ -42,64 +43,56 @@ const roleBasedRoutes: Record<string, string[]> = {
     "/dashboard",
     "/cash-flow",
     "/reports",
-    "/api/cash-flow",
+    "/api/cashflow",
     "/api/reports",
   ],
   inventory_manager: ["/dashboard", "/inventory", "/api/inventory"],
   viewer: ["/dashboard"],
 };
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the route is public
-  if (
-    publicRoutes.some(
-      (route) => pathname === route || pathname.startsWith(route + "/")
-    )
-  ) {
+  // Allow public routes
+  if (publicRoutes.some((route) => pathname.startsWith(route))) {
     return NextResponse.next();
   }
 
-  // Get the session token from cookies
-  const sessionToken = request.cookies.get("auth_token")?.value;
-
-  // If no session token, redirect to login
-  if (!sessionToken) {
-    const url = new URL("/login", request.url);
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
+  // Get user role from token
+  const token = request.cookies.get("token")?.value;
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Get user role from the session token
-  // In a real application, you would verify the JWT token here
-  // For now, we'll just check if the token exists
   try {
-    // For now, we'll allow access to all authenticated routes
-    // In a production environment, you would:
-    // 1. Verify the JWT token
-    // 2. Extract the user role from the token
-    // 3. Check if the user has access to the requested route
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your-secret-key"
+    ) as {
+      userId: string;
+      role: string;
+    };
+
+    // Check if user has access to the route
+    const allowedRoutes = roleBasedRoutes[decoded.role] || [];
+    if (!allowedRoutes.some((route) => pathname.startsWith(route))) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
     return NextResponse.next();
   } catch (error) {
-    // If there's an error, redirect to login
-    const url = new URL("/login", request.url);
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 }
 
-// Configure which routes to run the middleware on
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
+     * Match all request paths except for the ones starting with:
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - public folder
-     * - api/auth routes (to prevent circular dependencies)
      */
-    "/((?!_next/static|_next/image|favicon.ico|public/|api/auth/).*)",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

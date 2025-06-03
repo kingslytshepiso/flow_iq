@@ -1,4 +1,4 @@
-export type Language = "en" | "af" | "zu";
+export type Language = "en" | "zu";
 
 export const translations = {
   en: {
@@ -21,6 +21,13 @@ export const translations = {
       loading: "Loading...",
       dashboard: "Dashboard",
       appName: "FlowIQ",
+    },
+    navigation: {
+      dashboard: "Dashboard",
+      cashFlow: "Cash Flow",
+      inventory: "Inventory",
+      reports: "Reports",
+      admin: "Admin",
     },
     auth: {
       login: "Login",
@@ -47,52 +54,6 @@ export const translations = {
       passwordsDoNotMatch: "Passwords do not match",
     },
   },
-  af: {
-    common: {
-      signIn: "Meld aan",
-      signUp: "Registreer",
-      welcome: "Welkom terug",
-      createAccount: "Skep 'n rekening",
-      signInToAccount: "Meld aan by jou rekening",
-      signUpToStart: "Registreer om te begin",
-      email: "E-pos",
-      password: "Wagwoord",
-      name: "Naam",
-      enterEmail: "Voer jou e-pos in",
-      enterPassword: "Voer jou wagwoord in",
-      createPassword: "Skep 'n wagwoord",
-      enterName: "Voer jou naam in",
-      noAccount: "Het jy nie 'n rekening nie?",
-      haveAccount: "Het jy reeds 'n rekening?",
-      loading: "Laai...",
-      dashboard: "Dashboard",
-      appName: "FlowIQ",
-    },
-    auth: {
-      login: "Meld aan",
-      register: "Registreer",
-      logout: "Meld af",
-      email: "E-pos",
-      password: "Wagwoord",
-      confirmPassword: "Bevestig Wagwoord",
-    },
-    dashboard: {
-      welcome: "Welkom by FlowIQ",
-      subtitle: "Jou persoonlike AI-assistent",
-      startNewChat: "Begin 'n nuwe gesprek",
-      recentChats: "Onlangse gesprekke",
-      noRecentChats: "Geen onlangse gesprekke nie",
-    },
-    errors: {
-      required: "Hierdie veld is verpligtend",
-      invalidEmail: "Ongeldige e-posadres",
-      passwordTooShort: "Wagwoord moet ten minste 6 karakters wees",
-      loginFailed: "Aanmelding het misluk",
-      registerFailed: "Registrasie het misluk",
-      emailExists: "E-pos bestaan reeds",
-      passwordsDoNotMatch: "Wagwoorde stem nie ooreen nie",
-    },
-  },
   zu: {
     common: {
       signIn: "Ngena",
@@ -113,6 +74,13 @@ export const translations = {
       loading: "Iyalayisha...",
       dashboard: "Dashboard",
       appName: "FlowIQ",
+    },
+    navigation: {
+      dashboard: "Dashboard",
+      cashFlow: "Ukugeleza Kwemali",
+      inventory: "Izimpahla",
+      reports: "Imibiko",
+      admin: "Umphathi",
     },
     auth: {
       login: "Ngena",

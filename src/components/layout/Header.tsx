@@ -15,15 +15,11 @@ export function Header() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    // Check for saved theme preference or system preference
-    const savedTheme = localStorage.getItem("theme");
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
-    const initialTheme = savedTheme || systemTheme;
-    setTheme(initialTheme as "light" | "dark");
-    document.documentElement.setAttribute("data-theme", initialTheme);
+    // Check for saved theme preference
+    const savedTheme =
+      (localStorage.getItem("theme") as "light" | "dark") || "light";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
   const toggleTheme = () => {
@@ -45,25 +41,50 @@ export function Header() {
   };
 
   return (
-    <header className="bg-[var(--card)] border-b border-[var(--border)] h-16">
+    <header className="bg-card border-b border-border h-16">
       <div className="h-full flex justify-between items-center px-8">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold text-[var(--text)]">
-            {user ? "Dashboard" : "FlowIQ"}
-          </h1>
-          {user && (
-            <span className="text-sm text-[var(--text)]/70">{user.email}</span>
-          )}
+          <div className="flex items-center gap-2">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-blue-600"
+            >
+              <path
+                d="M12 2L2 7L12 12L22 7L12 2Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2 17L12 22L22 17"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2 12L12 17L22 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           {/* Language Switcher */}
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as Language)}
-            className="bg-[var(--background)] text-[var(--text)] border border-[var(--border)] rounded-md px-2 py-1 text-sm theme-transition"
+            className="bg-background text-text border border-border rounded-md px-2 py-1 text-sm"
           >
             <option value="en">English</option>
-            <option value="af">Afrikaans</option>
             <option value="zu">Zulu</option>
           </select>
 
@@ -71,7 +92,7 @@ export function Header() {
           <Button
             variant="outline"
             onClick={toggleTheme}
-            className="text-[var(--text)] p-2 theme-transition"
+            className="text-text p-2"
           >
             {theme === "light" ? (
               <svg

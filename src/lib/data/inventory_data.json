@@ -1,0 +1,333 @@
+{
+    "inventory_items": [
+        {
+            "item_id": "ITEM-100",
+            "name": "Samsung 4K Smart TV",
+            "category": "Electronics",
+            "price": 235.01
+        },
+        {
+            "item_id": "ITEM-101",
+            "name": "Wireless Bluetooth Earbuds",
+            "category": "Electronics",
+            "price": 251.42
+        },
+        {
+            "item_id": "ITEM-102",
+            "name": "Organic Whole Grain Bread",
+            "category": "Food",
+            "price": 177.56
+        },
+        {
+            "item_id": "ITEM-103",
+            "name": "Men's Casual Denim Jacket",
+            "category": "Clothing",
+            "price": 268.43
+        },
+        {
+            "item_id": "ITEM-104",
+            "name": "Modern Coffee Table",
+            "category": "Furniture",
+            "price": 455.96
+        },
+        {
+            "item_id": "ITEM-105",
+            "name": "Premium Ground Coffee",
+            "category": "Food",
+            "price": 184.79
+        },
+        {
+            "item_id": "ITEM-106",
+            "name": "Organic Mixed Nuts",
+            "category": "Food",
+            "price": 248.05
+        },
+        {
+            "item_id": "ITEM-107",
+            "name": "Accent Armchair",
+            "category": "Furniture",
+            "price": 113.86
+        },
+        {
+            "item_id": "ITEM-108",
+            "name": "Gaming Laptop",
+            "category": "Electronics",
+            "price": 386.06
+        },
+        {
+            "item_id": "ITEM-109",
+            "name": "Women's Summer Dress",
+            "category": "Clothing",
+            "price": 161.83
+        },
+        {
+            "item_id": "ITEM-110",
+            "name": "Gourmet Cheese Selection",
+            "category": "Food",
+            "price": 492.69
+        },
+        {
+            "item_id": "ITEM-111",
+            "name": "Bookshelf Unit",
+            "category": "Furniture",
+            "price": 334.55
+        },
+        {
+            "item_id": "ITEM-112",
+            "name": "Smart Home Speaker",
+            "category": "Electronics",
+            "price": 173.35
+        },
+        {
+            "item_id": "ITEM-113",
+            "name": "Designer Handbag",
+            "category": "Clothing",
+            "price": 448.53
+        },
+        {
+            "item_id": "ITEM-114",
+            "name": "Wireless Charging Pad",
+            "category": "Electronics",
+            "price": 158.76
+        },
+        {
+            "item_id": "ITEM-115",
+            "name": "4K Action Camera",
+            "category": "Electronics",
+            "price": 299.47
+        },
+        {
+            "item_id": "ITEM-116",
+            "name": "Organic Honey",
+            "category": "Food",
+            "price": 179.18
+        },
+        {
+            "item_id": "ITEM-117",
+            "name": "Artisanal Chocolate Box",
+            "category": "Food",
+            "price": 116.93
+        },
+        {
+            "item_id": "ITEM-118",
+            "name": "Organic Tea Selection",
+            "category": "Food",
+            "price": 58.77
+        },
+        {
+            "item_id": "ITEM-119",
+            "name": "Smart Watch",
+            "category": "Electronics",
+            "price": 419.85
+        }
+    ],
+    "stock_levels": [
+        {
+            "item_id": "ITEM-100",
+            "stock_level": 61,
+            "reorder_level": 6
+        },
+        {
+            "item_id": "ITEM-101",
+            "stock_level": 52,
+            "reorder_level": 18
+        },
+        {
+            "item_id": "ITEM-102",
+            "stock_level": 13,
+            "reorder_level": 13
+        },
+        {
+            "item_id": "ITEM-103",
+            "stock_level": 87,
+            "reorder_level": 18
+        },
+        {
+            "item_id": "ITEM-104",
+            "stock_level": 48,
+            "reorder_level": 16
+        },
+        {
+            "item_id": "ITEM-105",
+            "stock_level": 20,
+            "reorder_level": 12
+        },
+        {
+            "item_id": "ITEM-106",
+            "stock_level": 47,
+            "reorder_level": 19
+        },
+        {
+            "item_id": "ITEM-107",
+            "stock_level": 14,
+            "reorder_level": 6
+        },
+        {
+            "item_id": "ITEM-108",
+            "stock_level": 28,
+            "reorder_level": 11
+        },
+        {
+            "item_id": "ITEM-109",
+            "stock_level": 93,
+            "reorder_level": 18
+        },
+        {
+            "item_id": "ITEM-110",
+            "stock_level": 79,
+            "reorder_level": 11
+        },
+        {
+            "item_id": "ITEM-111",
+            "stock_level": 36,
+            "reorder_level": 12
+        },
+        {
+            "item_id": "ITEM-112",
+            "stock_level": 80,
+            "reorder_level": 5
+        },
+        {
+            "item_id": "ITEM-113",
+            "stock_level": 48,
+            "reorder_level": 8
+        },
+        {
+            "item_id": "ITEM-114",
+            "stock_level": 50,
+            "reorder_level": 16
+        },
+        {
+            "item_id": "ITEM-115",
+            "stock_level": 66,
+            "reorder_level": 5
+        },
+        {
+            "item_id": "ITEM-116",
+            "stock_level": 21,
+            "reorder_level": 18
+        },
+        {
+            "item_id": "ITEM-117",
+            "stock_level": 75,
+            "reorder_level": 12
+        },
+        {
+            "item_id": "ITEM-118",
+            "stock_level": 33,
+            "reorder_level": 19
+        },
+        {
+            "item_id": "ITEM-119",
+            "stock_level": 20,
+            "reorder_level": 8
+        }
+    ],
+    "order_history": [
+        {
+            "order_id": "ORD-200",
+            "item_id": "ITEM-113",
+            "quantity": 4,
+            "order_date": "2025-06-03",
+            "status": "Pending"
+        },
+        {
+            "order_id": "ORD-201",
+            "item_id": "ITEM-108",
+            "quantity": 7,
+            "order_date": "2025-05-31",
+            "status": "Pending"
+        },
+        {
+            "order_id": "ORD-202",
+            "item_id": "ITEM-108",
+            "quantity": 7,
+            "order_date": "2025-05-28",
+            "status": "Pending"
+        },
+        {
+            "order_id": "ORD-203",
+            "item_id": "ITEM-119",
+            "quantity": 2,
+            "order_date": "2025-05-25",
+            "status": "Cancelled"
+        },
+        {
+            "order_id": "ORD-204",
+            "item_id": "ITEM-102",
+            "quantity": 8,
+            "order_date": "2025-05-22",
+            "status": "Completed"
+        },
+        {
+            "order_id": "ORD-205",
+            "item_id": "ITEM-114",
+            "quantity": 4,
+            "order_date": "2025-05-19",
+            "status": "Completed"
+        },
+        {
+            "order_id": "ORD-206",
+            "item_id": "ITEM-110",
+            "quantity": 2,
+            "order_date": "2025-05-16",
+            "status": "Pending"
+        },
+        {
+            "order_id": "ORD-207",
+            "item_id": "ITEM-112",
+            "quantity": 1,
+            "order_date": "2025-05-13",
+            "status": "Pending"
+        },
+        {
+            "order_id": "ORD-208",
+            "item_id": "ITEM-110",
+            "quantity": 10,
+            "order_date": "2025-05-10",
+            "status": "Cancelled"
+        },
+        {
+            "order_id": "ORD-209",
+            "item_id": "ITEM-112",
+            "quantity": 4,
+            "order_date": "2025-05-07",
+            "status": "Completed"
+        },
+        {
+            "order_id": "ORD-210",
+            "item_id": "ITEM-101",
+            "quantity": 5,
+            "order_date": "2025-05-04",
+            "status": "Cancelled"
+        },
+        {
+            "order_id": "ORD-211",
+            "item_id": "ITEM-109",
+            "quantity": 5,
+            "order_date": "2025-05-01",
+            "status": "Completed"
+        },
+        {
+            "order_id": "ORD-212",
+            "item_id": "ITEM-116",
+            "quantity": 8,
+            "order_date": "2025-04-28",
+            "status": "Cancelled"
+        },
+        {
+            "order_id": "ORD-213",
+            "item_id": "ITEM-112",
+            "quantity": 3,
+            "order_date": "2025-04-25",
+            "status": "Cancelled"
+        },
+        {
+            "order_id": "ORD-214",
+            "item_id": "ITEM-104",
+            "quantity": 9,
+            "order_date": "2025-04-22",
+            "status": "Pending"
+        }
+    ]
+}

@@ -1,66 +1,323 @@
 "use client";
 
 import { useAuth } from "@/lib/auth/AuthContext";
+import cashFlowData from "@/lib/data/cash_flow_data.json";
+import inventoryData from "@/lib/data/inventory_data.json";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const [salesTotal, setSalesTotal] = useState<number>(0);
+  const [expensesTotal, setExpensesTotal] = useState<number>(0);
+  const [netCashFlow, setNetCashFlow] = useState<number>(0);
+  const [inventoryValue, setInventoryValue] = useState<number>(0);
+  const [lowStockItems, setLowStockItems] = useState<
+    { item: any; stock: any }[]
+  >([]);
+
+  useEffect(() => {
+    // Calculate totals from cash flow data
+    const totalSales = cashFlowData.sales.reduce(
+      (sum, sale) => sum + sale.amount,
+      0
+    );
+    const totalExpenses = cashFlowData.expenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
+
+    setSalesTotal(totalSales);
+    setExpensesTotal(totalExpenses);
+    setNetCashFlow(totalSales - totalExpenses);
+
+    // Calculate inventory value and get low stock items from local data
+    const totalValue = inventoryData.inventory_items.reduce(
+      (sum, item) =>
+        sum +
+        item.price *
+          (inventoryData.stock_levels.find(
+            (level) => level.item_id === item.item_id
+          )?.stock_level || 0),
+      0
+    );
+
+    const lowStock = inventoryData.inventory_items
+      .map((item) => {
+        const stock = inventoryData.stock_levels.find(
+          (level) => level.item_id === item.item_id
+        );
+        if (stock && stock.stock_level <= stock.reorder_level) {
+          return { item, stock };
+        }
+        return null;
+      })
+      .filter((item): item is { item: any; stock: any } => item !== null);
+
+    setInventoryValue(totalValue);
+    setLowStockItems(lowStock);
+  }, []);
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-ZA", {
+      style: "currency",
+      currency: "ZAR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-[var(--card)] rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-[var(--text)] mb-4">
-          Welcome, {user?.name}
-        </h2>
-        <p className="text-[var(--text)]/70">
-          This is your personalized dashboard. Use the navigation menu to access
-          different features.
+    <div className="min-h-screen bg-[var(--background)] p-6">
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
+          Welcome back, {user?.name}
+        </h1>
+        <p className="text-[var(--text)]/70 text-lg">
+          Here's your business overview for today
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Quick Stats */}
-        <div className="bg-[var(--card)] rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-[var(--text)] mb-4">
-            Quick Stats
-          </h3>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-[var(--text)]/70">Role</span>
-              <span className="font-medium text-[var(--text)]">
-                {user?.role}
-              </span>
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Financial Overview Card */}
+        <div className="lg:col-span-2 bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+          <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-blue-500"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+              <path d="M12 6v2" />
+              <path d="M12 16v2" />
+            </svg>
+            Financial Overview
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[var(--background)] rounded-lg p-4">
+              <p className="text-[var(--text)]/70 text-sm mb-1">Total Sales</p>
+              <p className="text-2xl font-bold text-[var(--text)]">
+                {formatCurrency(salesTotal)}
+              </p>
             </div>
-            <div className="flex justify-between">
-              <span className="text-[var(--text)]/70">Last Login</span>
-              <span className="font-medium text-[var(--text)]">Today</span>
+            <div className="bg-[var(--background)] rounded-lg p-4">
+              <p className="text-[var(--text)]/70 text-sm mb-1">
+                Total Expenses
+              </p>
+              <p className="text-2xl font-bold text-[var(--text)]">
+                {formatCurrency(expensesTotal)}
+              </p>
+            </div>
+            <div className="bg-[var(--background)] rounded-lg p-4">
+              <p className="text-[var(--text)]/70 text-sm mb-1">
+                Net Cash Flow
+              </p>
+              <p
+                className={`text-2xl font-bold ${
+                  netCashFlow >= 0 ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {formatCurrency(netCashFlow)}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Recent Activity */}
-        <div className="bg-[var(--card)] rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-[var(--text)] mb-4">
-            Recent Activity
-          </h3>
-          <div className="space-y-4">
-            <p className="text-[var(--text)]/70">No recent activity</p>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-[var(--card)] rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-[var(--text)] mb-4">
+        {/* Quick Actions Card */}
+        <div className="bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+          <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-green-500"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
             Quick Actions
-          </h3>
-          <div className="space-y-4">
-            <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          </h2>
+          <div className="space-y-3">
+            <button className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6" />
+                <path d="M16 13H8" />
+                <path d="M16 17H8" />
+                <path d="M10 9H8" />
+              </svg>
               View Reports
             </button>
-            <button className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+            <button className="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
               Add Transaction
             </button>
+            {lowStockItems.length > 0 && (
+              <button className="w-full bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z" />
+                  <path d="M12 2v20" />
+                  <path d="M2 12h20" />
+                </svg>
+                Reorder Items ({lowStockItems.length})
+              </button>
+            )}
           </div>
         </div>
+      </div>
+
+      {/* Inventory Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Inventory Status Card */}
+        <div className="bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+          <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-purple-500"
+            >
+              <path d="M20 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z" />
+              <path d="M12 2v20" />
+              <path d="M2 12h20" />
+            </svg>
+            Inventory Status
+          </h2>
+          <div className="space-y-4">
+            <div className="bg-[var(--background)] rounded-lg p-4">
+              <p className="text-[var(--text)]/70 text-sm mb-1">Total Value</p>
+              <p className="text-2xl font-bold text-[var(--text)]">
+                {formatCurrency(inventoryValue)}
+              </p>
+            </div>
+            <div className="bg-[var(--background)] rounded-lg p-4">
+              <p className="text-[var(--text)]/70 text-sm mb-1">
+                Low Stock Items
+              </p>
+              <p className="text-2xl font-bold text-[var(--text)]">
+                {lowStockItems.length}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Low Stock Items List */}
+        {lowStockItems.length > 0 && (
+          <div className="lg:col-span-2 bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+            <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-yellow-500"
+              >
+                <path d="M12 9v2" />
+                <path d="M12 17h.01" />
+                <path d="M5.07 19H19a2 2 0 0 0 1.75-2.67l-7.07-12.27a2 2 0 0 0-3.5 0l-7.07 12.27A2 2 0 0 0 5.07 19z" />
+              </svg>
+              Low Stock Items
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left border-b border-[var(--border)]">
+                    <th className="pb-3 text-[var(--text)]/70 font-medium">
+                      Item
+                    </th>
+                    <th className="pb-3 text-[var(--text)]/70 font-medium">
+                      Current Stock
+                    </th>
+                    <th className="pb-3 text-[var(--text)]/70 font-medium">
+                      Reorder Level
+                    </th>
+                    <th className="pb-3 text-[var(--text)]/70 font-medium">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lowStockItems.map(({ item, stock }) => (
+                    <tr
+                      key={item.item_id}
+                      className="border-b border-[var(--border)] last:border-0"
+                    >
+                      <td className="py-3 text-[var(--text)]">{item.name}</td>
+                      <td className="py-3 text-[var(--text)]">
+                        {stock.stock_level}
+                      </td>
+                      <td className="py-3 text-[var(--text)]">
+                        {stock.reorder_level}
+                      </td>
+                      <td className="py-3">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          Low Stock
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
