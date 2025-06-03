@@ -19,6 +19,8 @@
     "flow_iq": "file:",
     "jose": "^6.0.11",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "next": "15.3.3",
     "next-intl": "^4.1.0",
     "react": "^19.0.0",

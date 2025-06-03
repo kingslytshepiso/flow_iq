@@ -2,6 +2,8 @@
 
 import { useAuth } from "@/lib/auth/AuthContext";
 import inventoryData from "@/lib/data/inventory_data.json";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { exportToPDF } from "@/lib/utils/exportUtils";
 import { useEffect, useState } from "react";
 
 interface InventoryItem {
@@ -14,13 +16,31 @@ interface InventoryItem {
   lastRestocked: string;
 }
 
+interface DialogState {
+  isOpen: boolean;
+  type: "add" | "edit" | "delete" | null;
+  item?: InventoryItem;
+}
+
 export default function InventoryPage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortField, setSortField] = useState<keyof InventoryItem>("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [dialog, setDialog] = useState<DialogState>({
+    isOpen: false,
+    type: null,
+  });
+  const [formData, setFormData] = useState<Partial<InventoryItem>>({
+    name: "",
+    category: "",
+    quantity: 0,
+    price: 0,
+    reorderLevel: 0,
+  });
 
   useEffect(() => {
     // Load and transform inventory data
@@ -118,8 +138,71 @@ export default function InventoryPage() {
     };
   };
 
+  const handleAddItem = () => {
+    setFormData({
+      name: "",
+      category: "",
+      quantity: 0,
+      price: 0,
+      reorderLevel: 0,
+    });
+    setDialog({ isOpen: true, type: "add" });
+  };
+
+  const handleEditItem = (item: InventoryItem) => {
+    setFormData(item);
+    setDialog({ isOpen: true, type: "edit", item });
+  };
+
+  const handleDeleteItem = (item: InventoryItem) => {
+    setDialog({ isOpen: true, type: "delete", item });
+  };
+
+  const handleExport = () => {
+    const exportData = filteredInventory.map((item) => ({
+      Name: item.name,
+      Category: item.category,
+      Quantity: item.quantity,
+      Price: formatCurrency(item.price),
+      "Last Restocked": formatDate(item.lastRestocked),
+      Status: getStockStatus(item).text,
+    }));
+
+    exportToPDF(exportData, "inventory-report");
+  };
+
+  const handleSubmit = () => {
+    if (dialog.type === "add") {
+      const newItem: InventoryItem = {
+        id: Math.random().toString(36).substr(2, 9),
+        name: formData.name || "",
+        category: formData.category || "",
+        quantity: formData.quantity || 0,
+        price: formData.price || 0,
+        reorderLevel: formData.reorderLevel || 0,
+        lastRestocked: new Date().toISOString(),
+      };
+      setInventory([...inventory, newItem]);
+    } else if (dialog.type === "edit" && dialog.item) {
+      setInventory(
+        inventory.map((item) =>
+          item.id === dialog.item?.id
+            ? {
+                ...item,
+                ...formData,
+                lastRestocked: new Date().toISOString(),
+              }
+            : item
+        )
+      );
+    } else if (dialog.type === "delete" && dialog.item) {
+      setInventory(inventory.filter((item) => item.id !== dialog.item?.id));
+    }
+    setDialog({ isOpen: false, type: null });
+  };
+
   return (
-    <div className="min-h-screen bg-[var(--background)] p-6">
+    <div className="min-h-screen p-6">
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
@@ -170,10 +253,16 @@ export default function InventoryPage() {
             </select>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <button
+              onClick={handleAddItem}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
               Add Item
             </button>
-            <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+            <button
+              onClick={handleExport}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            >
               Export
             </button>
           </div>
@@ -352,10 +441,16 @@ export default function InventoryPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-blue-500 hover:text-blue-600 mr-3">
+                      <button
+                        onClick={() => handleEditItem(item)}
+                        className="text-blue-500 hover:text-blue-600 mr-3"
+                      >
                         Edit
                       </button>
-                      <button className="text-red-500 hover:text-red-600">
+                      <button
+                        onClick={() => handleDeleteItem(item)}
+                        className="text-red-500 hover:text-red-600"
+                      >
                         Delete
                       </button>
                     </td>
@@ -366,6 +461,161 @@ export default function InventoryPage() {
           </table>
         </div>
       </div>
+
+      {/* Dialog */}
+      {dialog.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[var(--card)] rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-xl font-semibold mb-4">
+              {dialog.type === "add"
+                ? "Add New Item"
+                : dialog.type === "edit"
+                ? "Edit Item"
+                : "Delete Item"}
+            </h2>
+
+            {dialog.type === "delete" ? (
+              <div>
+                <p className="mb-4">
+                  Are you sure you want to delete {dialog.item?.name}? This
+                  action cannot be undone.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => setDialog({ isOpen: false, type: null })}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+              >
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Category
+                    </label>
+                    <select
+                      value={formData.category}
+                      onChange={(e) =>
+                        setFormData({ ...formData, category: e.target.value })
+                      }
+                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      required
+                    >
+                      <option value="">Select a category</option>
+                      {categories
+                        .filter((cat) => cat !== "all")
+                        .map((category) => (
+                          <option key={category} value={category}>
+                            {category.charAt(0).toUpperCase() +
+                              category.slice(1)}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Quantity
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.quantity}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          quantity: parseInt(e.target.value),
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      required
+                      min="0"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Price
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          price: parseFloat(e.target.value),
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      required
+                      min="0"
+                      step="0.01"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">
+                      Reorder Level
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.reorderLevel}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          reorderLevel: parseInt(e.target.value),
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      required
+                      min="0"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setDialog({ isOpen: false, type: null })}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  >
+                    {dialog.type === "add" ? "Add" : "Save"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

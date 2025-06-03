@@ -41,7 +41,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-card border-b border-border h-16">
+    <header className="border-b border-border/50 backdrop-blur-sm bg-background/30 h-16">
       <div className="h-full flex justify-between items-center px-8">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export function Header() {
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="text-blue-600"
+              className="text-primary"
             >
               <path
                 d="M12 2L2 7L12 12L22 7L12 2Z"
@@ -78,11 +78,37 @@ export function Header() {
           </div>
         </div>
         <div className="flex items-center gap-4">
+          {/* Ask AI Button */}
+          <Button
+            variant="outline"
+            onClick={() => router.push("/ai-chat")}
+            className="h-9 flex items-center gap-2 bg-background/50 hover:bg-background/70 border-border/50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-purple-600"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              <path d="M8 10h.01" />
+              <path d="M12 10h.01" />
+              <path d="M16 10h.01" />
+            </svg>
+            {t("aiChat.askAI")}
+          </Button>
+
           {/* Language Switcher */}
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as Language)}
-            className="bg-background text-text border border-border rounded-md px-2 py-1 text-sm"
+            className="bg-background/50 text-text border border-border/50 rounded-md px-2 py-1 text-sm hover:bg-background/70 focus:outline-none focus:ring-2 focus:ring-primary/50"
           >
             <option value="en">English</option>
             <option value="zu">Zulu</option>
@@ -92,7 +118,7 @@ export function Header() {
           <Button
             variant="outline"
             onClick={toggleTheme}
-            className="text-text p-2"
+            className="text-text p-2 bg-background/50 hover:bg-background/70 border-border/50"
           >
             {theme === "light" ? (
               <svg
@@ -139,7 +165,7 @@ export function Header() {
               variant="outline"
               onClick={handleLogout}
               isLoading={isLoading}
-              className="h-9"
+              className="h-9 bg-background/50 hover:bg-background/70 border-border/50"
             >
               {t("auth.logout")}
             </Button>
@@ -148,11 +174,14 @@ export function Header() {
               <Button
                 variant="outline"
                 onClick={() => router.push("/login")}
-                className="h-9"
+                className="h-9 bg-background/50 hover:bg-background/70 border-border/50"
               >
                 {t("auth.login")}
               </Button>
-              <Button onClick={() => router.push("/register")} className="h-9">
+              <Button
+                onClick={() => router.push("/register")}
+                className="h-9 bg-primary hover:bg-primary-hover text-white"
+              >
                 {t("auth.register")}
               </Button>
             </div>

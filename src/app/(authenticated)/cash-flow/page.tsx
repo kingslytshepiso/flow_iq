@@ -328,7 +328,7 @@ export default function CashFlowDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-6">
+    <div className="min-h-screen p-6">
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[var(--text)] mb-2">

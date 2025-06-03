@@ -133,6 +133,26 @@ export default function AuthenticatedLayout({
         </svg>
       ),
     },
+    {
+      label: t("navigation.settings"),
+      href: "/settings",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -176,19 +196,19 @@ export default function AuthenticatedLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-gradient-background">
       <Header />
       <div className="flex h-[calc(100vh-64px)]">
         {/* Side Navigation */}
         <aside
-          className={`bg-[var(--card)] border-r border-[var(--border)] transition-all duration-300 h-full overflow-y-auto ${
+          className={`border-r border-border/50 backdrop-blur-sm bg-background/30 transition-all duration-300 h-full overflow-y-auto ${
             isCollapsed ? "w-16" : "w-64"
           }`}
         >
-          <div className="p-4 flex justify-end sticky top-0 bg-[var(--card)] z-10">
+          <div className="p-4 flex justify-end sticky top-0 bg-background/30 backdrop-blur-sm z-10">
             <button
               onClick={toggleCollapse}
-              className="p-2 rounded-md hover:bg-[var(--background)]"
+              className="p-2 rounded-md hover:bg-background/50 text-text/70 hover:text-text"
             >
               {isCollapsed ? (
                 <svg
@@ -228,10 +248,10 @@ export default function AuthenticatedLayout({
                   <div className="flex flex-col">
                     <Link
                       href={item.href}
-                      className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                      className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
                         pathname.startsWith(item.href)
-                          ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
-                          : "text-[var(--text)] hover:bg-[var(--background)]"
+                          ? "bg-primary/10 text-primary hover:bg-primary/20"
+                          : "text-text/70 hover:text-text hover:bg-background/50"
                       } ${isCollapsed ? "justify-center" : ""}`}
                       onClick={(e) => {
                         if (item.children) {
@@ -262,10 +282,10 @@ export default function AuthenticatedLayout({
                             <li key={child.href}>
                               <Link
                                 href={child.href}
-                                className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                                className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
                                   pathname === child.href
-                                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
-                                    : "text-[var(--text)] hover:bg-[var(--background)]"
+                                    ? "bg-primary/10 text-primary hover:bg-primary/20"
+                                    : "text-text/70 hover:text-text hover:bg-background/50"
                                 }`}
                               >
                                 <span className="mr-3">{child.icon}</span>

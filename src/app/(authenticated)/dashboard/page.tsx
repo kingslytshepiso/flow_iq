@@ -3,10 +3,12 @@
 import { useAuth } from "@/lib/auth/AuthContext";
 import cashFlowData from "@/lib/data/cash_flow_data.json";
 import inventoryData from "@/lib/data/inventory_data.json";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [salesTotal, setSalesTotal] = useState<number>(0);
   const [expensesTotal, setExpensesTotal] = useState<number>(0);
   const [netCashFlow, setNetCashFlow] = useState<number>(0);
@@ -67,7 +69,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-6">
+    <div className="min-h-screen p-6">
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
@@ -152,7 +154,10 @@ export default function DashboardPage() {
             Quick Actions
           </h2>
           <div className="space-y-3">
-            <button className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+            <button
+              onClick={() => router.push("/reports")}
+              className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -172,7 +177,10 @@ export default function DashboardPage() {
               </svg>
               View Reports
             </button>
-            <button className="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+            <button
+              onClick={() => router.push("/cash-flow")}
+              className="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -189,7 +197,10 @@ export default function DashboardPage() {
               Add Transaction
             </button>
             {lowStockItems.length > 0 && (
-              <button className="w-full bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center gap-2">
+              <button
+                onClick={() => router.push("/inventory")}
+                className="w-full bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center gap-2"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
