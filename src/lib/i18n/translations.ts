@@ -40,7 +40,35 @@ export const translations = {
       confirmPassword: "Confirm Password",
     },
     dashboard: {
-      welcome: "Welcome to FlowIQ",
+      welcome: {
+        title: "Welcome back, {name}",
+        subtitle: "Here's your business overview for today",
+      },
+      financialOverview: {
+        title: "Financial Overview",
+        totalSales: "Total Sales",
+        totalExpenses: "Total Expenses",
+        netCashFlow: "Net Cash Flow",
+      },
+      quickActions: {
+        title: "Quick Actions",
+        viewReports: "View Reports",
+        addTransaction: "Add Transaction",
+        reorderItems: "Reorder Items ({count})",
+      },
+      inventoryStatus: {
+        title: "Inventory Status",
+        totalValue: "Total Value",
+        lowStockItems: "Low Stock Items",
+      },
+      lowStockItems: {
+        title: "Low Stock Items",
+        item: "Item",
+        currentStock: "Current Stock",
+        reorderLevel: "Reorder Level",
+        status: "Status",
+        lowStock: "Low Stock",
+      },
       subtitle: "Your personal AI assistant",
       startNewChat: "Start a new chat",
       recentChats: "Recent chats",
@@ -147,7 +175,35 @@ export const translations = {
       confirmPassword: "Qinisekisa Iphasiwedi",
     },
     dashboard: {
-      welcome: "Wamukelekile ku-FlowIQ",
+      welcome: {
+        title: "Sawubona futhi, {name}",
+        subtitle: "Nakhu ukubuka kwebhizinisi lakho namhlanje",
+      },
+      financialOverview: {
+        title: "Ukuqonda Kwezimali",
+        totalSales: "Inani Elithengisiwe",
+        totalExpenses: "Izindleko Eziphelele",
+        netCashFlow: "Inani Elisele",
+      },
+      quickActions: {
+        title: "Izinyathelo Zokushesha",
+        viewReports: "Buka Imibiko",
+        addTransaction: "Engeza Ukuhwebelana",
+        reorderItems: "Hlela Kabusha Izinto ({count})",
+      },
+      inventoryStatus: {
+        title: "Isimo Sokubalwa",
+        totalValue: "Inani Eliphelele",
+        lowStockItems: "Izinto Ezincane",
+      },
+      lowStockItems: {
+        title: "Izinto Ezincane",
+        item: "Into",
+        currentStock: "Isitokhi Samanje",
+        reorderLevel: "Izinga Lokuhlela Kabusha",
+        status: "Isimo",
+        lowStock: "Isitokhi Esincane",
+      },
       subtitle: "Umxhumanisi wakho we-AI",
       startNewChat: "Qala ingxoxo entsha",
       recentChats: "Izingxoxo zakamuva",

@@ -42,10 +42,10 @@
   --background-hover: #1a1a1a;
   --text: #f2f2f2;
   --text-muted: #a0a0a0;
-  --border: #444;
-  --border-hover: #555;
-  --card: #1e1e1e;
-  --card-hover: #252525;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --card: rgba(30, 30, 30, 0.7);
+  --card-hover: rgba(37, 37, 37, 0.8);
   --success: #2ecc71;
   --success-hover: #27ae60;
   --warning: #f4d03f;
@@ -60,7 +60,11 @@
   --gradient-primary: linear-gradient(135deg, #16a085 0%, #2c3e50 100%);
   --gradient-accent: linear-gradient(135deg, #d68910 0%, #c0392b 100%);
   --gradient-background: linear-gradient(135deg, #121212 0%, #2c3e50 100%);
-  --gradient-card: linear-gradient(135deg, #1e1e1e 0%, #34495e 100%);
+  --gradient-card: linear-gradient(
+    135deg,
+    rgba(30, 30, 30, 0.7) 0%,
+    rgba(52, 73, 94, 0.7) 100%
+  );
 }
 
 @theme inline {

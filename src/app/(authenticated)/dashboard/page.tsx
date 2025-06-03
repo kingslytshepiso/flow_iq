@@ -3,12 +3,14 @@
 import { useAuth } from "@/lib/auth/AuthContext";
 import cashFlowData from "@/lib/data/cash_flow_data.json";
 import inventoryData from "@/lib/data/inventory_data.json";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { t } = useLanguage();
   const [salesTotal, setSalesTotal] = useState<number>(0);
   const [expensesTotal, setExpensesTotal] = useState<number>(0);
   const [netCashFlow, setNetCashFlow] = useState<number>(0);
@@ -73,17 +75,17 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
-          Welcome back, {user?.name}
+          {t("dashboard.welcome.title", { name: user?.name ?? "User" })}
         </h1>
         <p className="text-[var(--text)]/70 text-lg">
-          Here's your business overview for today
+          {t("dashboard.welcome.subtitle")}
         </p>
       </div>
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Financial Overview Card */}
-        <div className="lg:col-span-2 bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+        <div className="lg:col-span-2 bg-[var(--card)] backdrop-blur-sm rounded-xl shadow-lg p-6 border border-[var(--border)] hover:border-[var(--border-hover)] transition-colors">
           <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -102,26 +104,28 @@ export default function DashboardPage() {
               <path d="M12 6v2" />
               <path d="M12 16v2" />
             </svg>
-            Financial Overview
+            {t("dashboard.financialOverview.title")}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-[var(--background)] rounded-lg p-4">
-              <p className="text-[var(--text)]/70 text-sm mb-1">Total Sales</p>
+            <div className="bg-[var(--background)]/50 backdrop-blur-sm rounded-lg p-4 border border-[var(--border)]/50">
+              <p className="text-[var(--text)]/70 text-sm mb-1">
+                {t("dashboard.financialOverview.totalSales")}
+              </p>
               <p className="text-2xl font-bold text-[var(--text)]">
                 {formatCurrency(salesTotal)}
               </p>
             </div>
-            <div className="bg-[var(--background)] rounded-lg p-4">
+            <div className="bg-[var(--background)]/50 backdrop-blur-sm rounded-lg p-4 border border-[var(--border)]/50">
               <p className="text-[var(--text)]/70 text-sm mb-1">
-                Total Expenses
+                {t("dashboard.financialOverview.totalExpenses")}
               </p>
               <p className="text-2xl font-bold text-[var(--text)]">
                 {formatCurrency(expensesTotal)}
               </p>
             </div>
-            <div className="bg-[var(--background)] rounded-lg p-4">
+            <div className="bg-[var(--background)]/50 backdrop-blur-sm rounded-lg p-4 border border-[var(--border)]/50">
               <p className="text-[var(--text)]/70 text-sm mb-1">
-                Net Cash Flow
+                {t("dashboard.financialOverview.netCashFlow")}
               </p>
               <p
                 className={`text-2xl font-bold ${
@@ -135,7 +139,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions Card */}
-        <div className="bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+        <div className="bg-[var(--card)] backdrop-blur-sm rounded-xl shadow-lg p-6 border border-[var(--border)] hover:border-[var(--border-hover)] transition-colors">
           <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -151,12 +155,12 @@ export default function DashboardPage() {
             >
               <path d="M12 5v14M5 12h14" />
             </svg>
-            Quick Actions
+            {t("dashboard.quickActions.title")}
           </h2>
           <div className="space-y-3">
             <button
               onClick={() => router.push("/reports")}
-              className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-blue-600/90 backdrop-blur-sm text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 border border-blue-500/20"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -175,11 +179,11 @@ export default function DashboardPage() {
                 <path d="M16 17H8" />
                 <path d="M10 9H8" />
               </svg>
-              View Reports
+              {t("dashboard.quickActions.viewReports")}
             </button>
             <button
               onClick={() => router.push("/cash-flow")}
-              className="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-green-600/90 backdrop-blur-sm text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 border border-green-500/20"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -194,12 +198,12 @@ export default function DashboardPage() {
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              Add Transaction
+              {t("dashboard.quickActions.addTransaction")}
             </button>
             {lowStockItems.length > 0 && (
               <button
                 onClick={() => router.push("/inventory")}
-                className="w-full bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-yellow-600/90 backdrop-blur-sm text-white px-4 py-3 rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center gap-2 border border-yellow-500/20"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +220,9 @@ export default function DashboardPage() {
                   <path d="M12 2v20" />
                   <path d="M2 12h20" />
                 </svg>
-                Reorder Items ({lowStockItems.length})
+                {t("dashboard.quickActions.reorderItems", {
+                  count: lowStockItems.length,
+                })}
               </button>
             )}
           </div>
@@ -226,7 +232,7 @@ export default function DashboardPage() {
       {/* Inventory Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Inventory Status Card */}
-        <div className="bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+        <div className="bg-[var(--card)] backdrop-blur-sm rounded-xl shadow-lg p-6 border border-[var(--border)] hover:border-[var(--border-hover)] transition-colors">
           <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -244,18 +250,20 @@ export default function DashboardPage() {
               <path d="M12 2v20" />
               <path d="M2 12h20" />
             </svg>
-            Inventory Status
+            {t("dashboard.inventoryStatus.title")}
           </h2>
           <div className="space-y-4">
-            <div className="bg-[var(--background)] rounded-lg p-4">
-              <p className="text-[var(--text)]/70 text-sm mb-1">Total Value</p>
+            <div className="bg-[var(--background)]/50 backdrop-blur-sm rounded-lg p-4 border border-[var(--border)]/50">
+              <p className="text-[var(--text)]/70 text-sm mb-1">
+                {t("dashboard.inventoryStatus.totalValue")}
+              </p>
               <p className="text-2xl font-bold text-[var(--text)]">
                 {formatCurrency(inventoryValue)}
               </p>
             </div>
-            <div className="bg-[var(--background)] rounded-lg p-4">
+            <div className="bg-[var(--background)]/50 backdrop-blur-sm rounded-lg p-4 border border-[var(--border)]/50">
               <p className="text-[var(--text)]/70 text-sm mb-1">
-                Low Stock Items
+                {t("dashboard.inventoryStatus.lowStockItems")}
               </p>
               <p className="text-2xl font-bold text-[var(--text)]">
                 {lowStockItems.length}
@@ -266,7 +274,7 @@ export default function DashboardPage() {
 
         {/* Low Stock Items List */}
         {lowStockItems.length > 0 && (
-          <div className="lg:col-span-2 bg-[var(--card)] rounded-xl shadow-lg p-6 border border-[var(--border)]">
+          <div className="lg:col-span-2 bg-[var(--card)] backdrop-blur-sm rounded-xl shadow-lg p-6 border border-[var(--border)] hover:border-[var(--border-hover)] transition-colors">
             <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -284,23 +292,23 @@ export default function DashboardPage() {
                 <path d="M12 17h.01" />
                 <path d="M5.07 19H19a2 2 0 0 0 1.75-2.67l-7.07-12.27a2 2 0 0 0-3.5 0l-7.07 12.27A2 2 0 0 0 5.07 19z" />
               </svg>
-              Low Stock Items
+              {t("dashboard.lowStockItems.title")}
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="text-left border-b border-[var(--border)]">
                     <th className="pb-3 text-[var(--text)]/70 font-medium">
-                      Item
+                      {t("dashboard.lowStockItems.item")}
                     </th>
                     <th className="pb-3 text-[var(--text)]/70 font-medium">
-                      Current Stock
+                      {t("dashboard.lowStockItems.currentStock")}
                     </th>
                     <th className="pb-3 text-[var(--text)]/70 font-medium">
-                      Reorder Level
+                      {t("dashboard.lowStockItems.reorderLevel")}
                     </th>
                     <th className="pb-3 text-[var(--text)]/70 font-medium">
-                      Status
+                      {t("dashboard.lowStockItems.status")}
                     </th>
                   </tr>
                 </thead>
@@ -318,8 +326,8 @@ export default function DashboardPage() {
                         {stock.reorder_level}
                       </td>
                       <td className="py-3">
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                          Low Stock
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100/20 backdrop-blur-sm text-yellow-500 border border-yellow-500/20">
+                          {t("dashboard.lowStockItems.lowStock")}
                         </span>
                       </td>
                     </tr>

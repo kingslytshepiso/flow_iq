@@ -3,15 +3,20 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Language, translations } from "./translations";
 
-type LanguageContextType = {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
-};
+type TranslationFunction = (
+  key: string,
+  params?: Record<string, string | number>
+) => string;
 
-const LanguageContext = createContext<LanguageContextType | undefined>(
-  undefined
-);
+export const LanguageContext = createContext<{
+  language: Language;
+  setLanguage: (language: Language) => void;
+  t: TranslationFunction;
+}>({
+  language: "en",
+  setLanguage: () => {},
+  t: (key: string) => key,
+});
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
@@ -30,22 +35,24 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("language", lang);
   };
 
-  const t = (key: string) => {
+  const t = (key: string, params?: Record<string, string | number>) => {
     const keys = key.split(".");
     let value: any = translations[language];
 
     for (const k of keys) {
-      if (value && typeof value === "object" && k in value) {
-        value = value[k];
-      } else {
-        console.warn(
-          `Translation key not found: ${key} for language: ${language}`
-        );
-        return key;
-      }
+      if (value === undefined) return key;
+      value = value[k];
     }
 
-    return typeof value === "string" ? value : key;
+    if (typeof value !== "string") return key;
+
+    if (params) {
+      return Object.entries(params).reduce((str, [key, val]) => {
+        return str.replace(`{${key}}`, String(val));
+      }, value);
+    }
+
+    return value;
   };
 
   return (
@@ -57,10 +64,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useLanguage() {
+export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
-}
+};
