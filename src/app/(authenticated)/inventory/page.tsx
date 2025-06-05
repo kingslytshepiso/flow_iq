@@ -464,9 +464,9 @@ export default function InventoryPage() {
 
       {/* Dialog */}
       {dialog.isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-[var(--card)] rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[var(--card)] rounded-xl shadow-lg p-6 w-full max-w-md border border-[var(--border)]">
+            <h2 className="text-xl font-semibold text-[var(--text)] mb-6">
               {dialog.type === "add"
                 ? "Add New Item"
                 : dialog.type === "edit"
@@ -476,20 +476,20 @@ export default function InventoryPage() {
 
             {dialog.type === "delete" ? (
               <div>
-                <p className="mb-4">
+                <p className="mb-4 text-[var(--text)]/70">
                   Are you sure you want to delete {dialog.item?.name}? This
                   action cannot be undone.
                 </p>
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-3">
                   <button
                     onClick={() => setDialog({ isOpen: false, type: null })}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                    className="px-4 py-2 text-[var(--text)]/70 hover:text-[var(--text)] transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSubmit}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     Delete
                   </button>
@@ -504,7 +504,7 @@ export default function InventoryPage() {
               >
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium text-[var(--text)]/70 mb-1">
                       Name
                     </label>
                     <input
@@ -513,12 +513,12 @@ export default function InventoryPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
-                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium text-[var(--text)]/70 mb-1">
                       Category
                     </label>
                     <select
@@ -526,7 +526,7 @@ export default function InventoryPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, category: e.target.value })
                       }
-                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     >
                       <option value="">Select a category</option>
@@ -541,7 +541,7 @@ export default function InventoryPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium text-[var(--text)]/70 mb-1">
                       Quantity
                     </label>
                     <input
@@ -553,13 +553,13 @@ export default function InventoryPage() {
                           quantity: parseInt(e.target.value),
                         })
                       }
-                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                       min="0"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium text-[var(--text)]/70 mb-1">
                       Price
                     </label>
                     <input
@@ -571,14 +571,14 @@ export default function InventoryPage() {
                           price: parseFloat(e.target.value),
                         })
                       }
-                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                       min="0"
                       step="0.01"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium text-[var(--text)]/70 mb-1">
                       Reorder Level
                     </label>
                     <input
@@ -590,23 +590,23 @@ export default function InventoryPage() {
                           reorderLevel: parseInt(e.target.value),
                         })
                       }
-                      className="w-full px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--background)]"
+                      className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                       min="0"
                     />
                   </div>
                 </div>
-                <div className="flex justify-end gap-2 mt-6">
+                <div className="flex justify-end gap-3 mt-6">
                   <button
                     type="button"
                     onClick={() => setDialog({ isOpen: false, type: null })}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                    className="px-4 py-2 text-[var(--text)]/70 hover:text-[var(--text)] transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     {dialog.type === "add" ? "Add" : "Save"}
                   </button>
